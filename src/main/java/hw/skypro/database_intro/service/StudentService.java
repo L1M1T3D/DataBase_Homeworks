@@ -1,5 +1,6 @@
 package hw.skypro.database_intro.service;
 
+import hw.skypro.database_intro.models.Faculty;
 import hw.skypro.database_intro.models.Student;
 import hw.skypro.database_intro.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,17 @@ public class StudentService {
         return studentRepository.findByAge(age);
     }
 
+    public Collection<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty findFaculty(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+
+        if (student == null) {
+            return null;
+        }
+
+        return student.getFaculty();
+    }
 }

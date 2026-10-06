@@ -1,9 +1,12 @@
 package hw.skypro.database_intro.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.util.Objects;
 
@@ -16,6 +19,11 @@ public class Student {
 
     private String name;
     private int age;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    @JsonBackReference
+    private Faculty faculty;
 
     public long getId() {
         return id;
@@ -41,6 +49,14 @@ public class Student {
         this.age = age;
     }
 
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -58,5 +74,4 @@ public class Student {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

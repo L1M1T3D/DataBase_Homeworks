@@ -1,5 +1,6 @@
 package hw.skypro.database_intro.controllers;
 
+import hw.skypro.database_intro.models.Faculty;
 import hw.skypro.database_intro.models.Student;
 import hw.skypro.database_intro.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -61,4 +62,22 @@ public class StudentController {
         return studentService.findByAge(age);
     }
 
+    @GetMapping("/age")
+    public Collection<Student> getStudentsByAgeBetween(
+            @RequestParam int min,
+            @RequestParam int max
+    ) {
+        return studentService.findByAgeBetween(min, max);
+    }
+
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
+        Faculty faculty = studentService.findFaculty(id);
+
+        if (faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(faculty);
+    }
 }

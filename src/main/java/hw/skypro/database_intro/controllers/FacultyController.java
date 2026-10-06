@@ -1,6 +1,7 @@
 package hw.skypro.database_intro.controllers;
 
 import hw.skypro.database_intro.models.Faculty;
+import hw.skypro.database_intro.models.Student;
 import hw.skypro.database_intro.service.FacultyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,4 +62,19 @@ public class FacultyController {
         return facultyService.findByColor(color);
     }
 
+    @GetMapping("/search")
+    public Collection<Faculty> searchFaculties(@RequestParam String query) {
+        return facultyService.findByNameOrColor(query);
+    }
+
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> getFacultyStudents(@PathVariable Long id) {
+        Collection<Student> students = facultyService.findStudents(id);
+
+        if (students == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(students);
+    }
 }

@@ -1,6 +1,7 @@
 package hw.skypro.database_intro.service;
 
 import hw.skypro.database_intro.models.Faculty;
+import hw.skypro.database_intro.models.Student;
 import hw.skypro.database_intro.repositories.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,4 +46,20 @@ public class FacultyService {
         return facultyRepository.findByColorIgnoreCase(color);
     }
 
+    public Collection<Faculty> findByNameOrColor(String search) {
+        return facultyRepository.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(
+                search,
+                search
+        );
+    }
+
+    public Collection<Student> findStudents(Long facultyId) {
+        Faculty faculty = facultyRepository.findById(facultyId).orElse(null);
+
+        if (faculty == null) {
+            return null;
+        }
+
+        return faculty.getStudents();
+    }
 }

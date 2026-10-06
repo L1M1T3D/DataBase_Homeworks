@@ -1,10 +1,14 @@
 package hw.skypro.database_intro.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,13 +21,9 @@ public class Faculty {
     private String name;
     private String color;
 
-//    public Faculty() {
-//    }
-//
-//    public Faculty(String name, String color) {
-//        this.name = name;
-//        this.color = color;
-//    }
+    @OneToMany(mappedBy = "faculty")
+    @JsonManagedReference
+    private List<Student> students = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -49,6 +49,14 @@ public class Faculty {
         this.color = color;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,5 +74,4 @@ public class Faculty {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }
