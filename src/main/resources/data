@@ -1,0 +1,17 @@
+-- INSERT INTO faculty (name, color)
+-- VALUES ('Gryffindor', 'red');
+--
+-- INSERT INTO faculty (name, color)
+-- VALUES ('Slytherin', 'green');
+--
+-- INSERT INTO faculty (name, color)
+-- VALUES ('Ravenclaw', 'blue');
+--
+-- INSERT INTO student (name, age)
+-- VALUES ('Harry Potter', 11);
+--
+-- INSERT INTO student (name, age)
+-- VALUES ('Draco Malfoy', 11);
+--
+-- INSERT INTO student (name, age)
+-- VALUES ('Hermione Granger', 12);
