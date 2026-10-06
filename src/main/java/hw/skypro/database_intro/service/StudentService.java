@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class StudentService {
 
@@ -19,16 +22,32 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     public Student createStudent(Student student) {
+        logger.info("Was invoked method for create student");
+        logger.debug("Student name: {}", student.getName());
+
         return studentRepository.save(student);
     }
 
     public Student findStudent(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        logger.info("Was invoked method for find student");
+
+        Student student = studentRepository.findById(id).orElse(null);
+
+        if (student == null) {
+            logger.warn("Student with id {} was not found", id);
+        }
+
+        return student;
     }
 
     public Student editStudent(Student student) {
+        logger.info("Was invoked method for edit student");
+
         if (!studentRepository.existsById(student.getId())) {
+            logger.warn("Student with id {} does not exist", student.getId());
             return null;
         }
 
@@ -36,25 +55,36 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
+        logger.info("Was invoked method for delete student");
+
         studentRepository.deleteById(id);
     }
 
     public Collection<Student> getAllStudents() {
+        logger.info("Was invoked method for get all students");
+
         return studentRepository.findAll();
     }
 
     public Collection<Student> findByAge(int age) {
+        logger.info("Was invoked method for find students by age");
+
         return studentRepository.findByAge(age);
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {
+        logger.info("Was invoked method for find students by age between");
+
         return studentRepository.findByAgeBetween(min, max);
     }
 
-    public Faculty findFaculty(Long studentId) {
-        Student student = studentRepository.findById(studentId).orElse(null);
+    public Faculty findFaculty(Long id) {
+        logger.info("Was invoked method for find student faculty");
+
+        Student student = findStudent(id);
 
         if (student == null) {
+            logger.warn("Faculty cannot be found because student with id {} does not exist", id);
             return null;
         }
 
@@ -62,13 +92,18 @@ public class StudentService {
     }
 
     public long getStudentsCount() {
+        logger.info("Was invoked method for get students count");
+
         return studentRepository.getStudentsCount();
     }
 
     public double getAverageAge() {
+        logger.info("Was invoked method for get average student age");
+
         Double averageAge = studentRepository.getAverageAge();
 
         if (averageAge == null) {
+            logger.debug("There are no students, average age is 0");
             return 0.0;
         }
 
@@ -76,6 +111,8 @@ public class StudentService {
     }
 
     public List<Student> getLastFiveStudents() {
+        logger.info("Was invoked method for get last five students");
+
         return studentRepository.getLastFiveStudents();
     }
 
