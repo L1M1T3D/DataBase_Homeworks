@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/scripts/student-name-index.sql
+
+  - include:
+      file: liquibase/scripts/faculty-name-color-index.sql
