@@ -12,6 +12,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.Stream;
+
 @Service
 public class StudentService {
 
@@ -114,6 +116,35 @@ public class StudentService {
         logger.info("Was invoked method for get last five students");
 
         return studentRepository.getLastFiveStudents();
+    }
+
+    public List<String> getStudentNamesStartingWithA() {
+        logger.info("Was invoked method for get student names starting with A");
+
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(name -> name.startsWith("A"))
+                .sorted()
+                .toList();
+    }
+
+    public double getAverageStudentAge() {
+        logger.info("Was invoked method for get average student age by stream");
+
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
+    }
+
+    public int getParallelSum() {
+        logger.info("Was invoked method for calculate parallel sum");
+
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, Integer::sum);
     }
 
 }
