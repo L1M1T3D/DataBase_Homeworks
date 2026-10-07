@@ -112,4 +112,74 @@ public class StudentController {
         return studentService.getParallelSum();
     }
 
+    @GetMapping("/print-parallel")
+    public void printStudentsParallel() {
+        List<Student> students = (List<Student>) studentService.getAllStudents();
+
+        if (students.size() < 6) {
+            System.out.println("Not enough students");
+            return;
+        }
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private synchronized void printName(String name) {
+        System.out.println(name);
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        List<Student> students = (List<Student>) studentService.getAllStudents();
+
+        if (students.size() < 6) {
+            System.out.println("Not enough students");
+            return;
+        }
+
+        printName(students.get(0).getName());
+        printName(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            printName(students.get(2).getName());
+            printName(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            printName(students.get(4).getName());
+            printName(students.get(5).getName());
+        });
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
 }
